@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>She Style | Contact Us</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #fff0f6;
+}
+
+nav {
+  padding: 18px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ff4da6;
+}
+
+nav a {
+  text-decoration: none;
+  margin-left: 30px;
+  color: #444;
+  font-weight: 500;
+}
+
+nav a:hover {
+  color: #ff4da6;
+}
+
+.contact {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.contact-info h1 {
+  color: #ff4da6;
+  font-size: 40px;
+}
+
+.contact-info p {
+  color: #555;
+  margin: 15px 0;
+}
+
+.contact-info div {
+  margin-top: 20px;
+}
+
+form {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #ff4da6;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e60073;
+}
+
+@media (max-width: 900px) {
+  .contact {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">She Style</div>
+  <div>
+    <a href="home.html">Home</a>
+    <a href="product.html">Products</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart</a>
+  </div>
+</nav>
+
+<section class="contact">
+  <div class="contact-info">
+    <h1>Contact Us</h1>
+    <p>
+      Have questions, feedback, or support requests?
+      We're here to help you with your shopping experience.
+    </p>
+
+    <div>
+      📍 Location: India<br><br>
+      📧 Email: support@sheStyle.com<br><br>
+      📞 Phone: +91 9XXXXXXXXX
+    </div>
+  </div>
+
+  <form onsubmit="sendMessage(event)">
+  <input type="text" id="name" placeholder="Your Name" required>
+  <input type="email" id="email" placeholder="Your Email" required>
+  <textarea id="message" placeholder="Your Message" required></textarea>
+
+  <button type="submit">Send Message</button>
+</form>
+
+</section>
+<script>
+async function sendMessage(event) {
+  event.preventDefault(); // 🔥 THIS LINE FIXES EVERYTHING
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, message })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message);
+      return;
+    }
+
+    alert("✅ Message sent successfully");
+    document.querySelector("form").reset();
+
+  } catch (error) {
+    console.error("Frontend error:", error);
+    alert("❌ Server error");
+  }
+}
+</script>
+
+
+</body>
+</html>

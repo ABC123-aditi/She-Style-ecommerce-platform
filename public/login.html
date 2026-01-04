@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login | ShopStyle</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #9795f0, #f9c5d1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .auth-box {
+      background: #fff;
+      padding: 30px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    .auth-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .auth-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .auth-box button {
+      width: 100%;
+      padding: 12px;
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .auth-box button:hover {
+      background: #e63956;
+    }
+
+    .auth-box p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .auth-box a {
+      color: #ff4d6d;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="auth-box">
+    <h2>Welcome Back</h2>
+
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="password" id="password" placeholder="Password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p>New here? <a href="register.html">Create Account</a></p>
+  </div>
+
+  <script>
+  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        alert("✅ Login successful");
+        window.location.href = "home.html"; // Live Server redirect
+      } else {
+        alert("❌ " + data.message);
+      }
+    } catch (err) {
+      alert("❌ Backend not running on port 5000");
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

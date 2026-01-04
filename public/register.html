@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | ShopStyle</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #f9c5d1, #9795f0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .auth-box {
+      background: #fff;
+      padding: 30px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .auth-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .auth-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .auth-box button {
+      width: 100%;
+      padding: 12px;
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .auth-box button:hover {
+      background: #e63956;
+    }
+
+    .auth-box p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .auth-box a {
+      color: #ff4d6d;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-box">
+    <h2>Create Account</h2>
+
+    <form id="registerForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="password" id="password" placeholder="Password" required>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p>Already registered? <a href="login.html">Login</a></p>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+      e.preventDefault(); // 🔥 IMPORTANT
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:5000/api/register", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name, email, password })
+});
+
+
+        // Check if response is ok before trying to parse JSON
+        if (!response.ok) {
+          // Try to get error message from response
+          let errorMessage = "Registration failed";
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            errorMessage = `Server error: ${response.status} ${response.statusText}`;
+          }
+          alert("❌ " + errorMessage);
+          return;
+        }
+
+        const data = await response.json();
+
+        if (data.message) {
+          alert("✅ " + data.message);
+          window.location.href = "login.html";
+        } else {
+          alert("✅ Registration successful! Please login.");
+          window.location.href = "login.html";
+        }
+
+      } catch (error) {
+        console.error("Registration error:", error);
+        let errorMessage = "Something went wrong";
+        
+        if (error.message.includes("fetch")) {
+          errorMessage = "Cannot connect to server. Make sure the backend server is running on http://localhost:5000";
+        } else {
+          errorMessage = error.message || "Something went wrong";
+        }
+        
+        alert("❌ " + errorMessage);
+      }
+    });
+  </script>
+
+</body>
+</html>

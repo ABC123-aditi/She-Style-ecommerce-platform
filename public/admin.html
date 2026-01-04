@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard | ShopEase</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f2f4f8;
+}
+
+/* NAVBAR */
+nav {
+  background: #222;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+nav button {
+  background: #ff4081;
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+/* FORM */
+.form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-row input {
+  padding: 10px;
+  min-width: 180px;
+  flex: 1;
+}
+
+.primary-btn {
+  background: #ff4081;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.danger-btn {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.outline-btn {
+  background: transparent;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #333;
+  color: white;
+  padding: 12px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+/* MESSAGE */
+.message {
+  background: #fafafa;
+  padding: 15px;
+  border-left: 5px solid #ff4081;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.message.replied {
+  border-left-color: #4caf50;
+  background: #f1f8f4;
+}
+
+.reply-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.reply-section textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 10px;
+}
+
+.reply-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reply-btn:hover {
+  background: #45a049;
+}
+
+.reply-display {
+  background: #e8f5e9;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  border-left: 3px solid #4caf50;
+}
+
+.reply-display strong {
+  color: #2e7d32;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* ORDER */
+.order-card {
+  background: #f9fff9;
+  border-left: 5px solid #4caf50;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h1>Admin Dashboard – She Style</h1>
+  <button onclick="logout()">Logout</button>
+</nav>
+
+<div class="container">
+
+<!-- ADD PRODUCT -->
+<div class="card">
+  <h3>➕ Add Product</h3>
+  <div class="form-row">
+    <input id="name" placeholder="Product Name">
+    <input id="price" type="number" placeholder="Price">
+    <input id="image" placeholder="Image (a1.jpeg)">
+    <input id="stock" type="number" placeholder="Stock">
+    <button class="primary-btn" onclick="addProduct()">Add</button>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="card">
+  <h3>📦 Products</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="products"></tbody>
+  </table>
+</div>
+
+<!-- MESSAGES -->
+<div class="card">
+  <h3>📩 Customer Messages</h3>
+  <div id="messages"></div>
+</div>
+
+<!-- ORDERS -->
+<div class="card">
+  <h3>🧾 Orders</h3>
+  <div id="orders"></div>
+</div>
+
+</div>
+
+<script>
+/* AUTH */
+if (!localStorage.getItem("isAditi")) {
+  window.location = "adminlogin.html";
+}
+
+function logout() {
+  localStorage.removeItem("isAditi");
+  window.location = "adminlogin.html";
+}
+
+/* PRODUCTS */
+async function loadProducts() {
+  const res = await fetch("http://localhost:5000/api/products");
+  const products = await res.json();
+  const tbody = document.getElementById("products");
+  tbody.innerHTML = "";
+
+  products.forEach(p => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${p.name}</td>
+        <td>₹${p.price}</td>
+        <td>${p.stock}</td>
+        <td>
+          <button class="outline-btn" onclick="updateStock('${p._id}')">Update</button>
+          <button class="danger-btn" onclick="deleteProduct('${p._id}')">Delete</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+async function addProduct() {
+  const nameInput = document.getElementById("name");
+  const priceInput = document.getElementById("price");
+  const imageInput = document.getElementById("image");
+  const stockInput = document.getElementById("stock");
+
+  if (!nameInput.value || !priceInput.value || !stockInput.value) {
+    alert("Please fill in all required fields (Name, Price, Stock)");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/admin/product", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name: nameInput.value,
+        price: Number(priceInput.value),
+        image: imageInput.value || "",
+        stock: Number(stockInput.value)
+      })
+    });
+
+    const data = await res.json();
+    
+    if (res.ok) {
+      alert("✅ Product added successfully!");
+      // Clear form
+      nameInput.value = "";
+      priceInput.value = "";
+      imageInput.value = "";
+      stockInput.value = "";
+      loadProducts();
+    } else {
+      alert("❌ Error: " + (data.message || "Failed to add product"));
+    }
+  } catch (err) {
+    console.error("Error adding product:", err);
+    alert("❌ Error adding product. Please try again.");
+  }
+}
+
+async function updateStock(id) {
+  const stock = prompt("Enter new stock");
+  if (!stock) return;
+
+  await fetch(`http://localhost:5000/api/admin/product/${id}`, {
+    method: "PUT",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ stock: Number(stock) })
+  });
+  loadProducts();
+}
+
+async function deleteProduct(id) {
+  if (!confirm("Delete product?")) return;
+  await fetch(`http://localhost:5000/api/admin/product/${id}`, { method: "DELETE" });
+  loadProducts();
+}
+
+/* MESSAGES */
+async function loadMessages() {
+  const res = await fetch("http://localhost:5000/api/admin/messages");
+  const messages = await res.json();
+  const div = document.getElementById("messages");
+  div.innerHTML = "";
+
+  if (!messages.length) {
+    div.innerHTML = "<p>No messages yet.</p>";
+    return;
+  }
+
+  messages.forEach(m => {
+    const hasReply = m.reply && m.reply.trim() !== "";
+    const messageClass = hasReply ? "message replied" : "message";
+    
+    let replySection = "";
+    if (hasReply) {
+      replySection = `
+        <div class="reply-display">
+          <strong>Admin Reply:</strong>
+          ${m.reply}
+          <small style="display: block; margin-top: 8px; color: #666;">
+            Replied on: ${new Date(m.repliedAt).toLocaleString()}
+          </small>
+        </div>
+      `;
+    } else {
+      replySection = `
+        <div class="reply-section">
+          <textarea id="reply-${m._id}" placeholder="Type your reply here..."></textarea>
+          <button class="reply-btn" onclick="sendReply('${m._id}')">Send Reply</button>
+        </div>
+      `;
+    }
+
+    div.innerHTML += `
+      <div class="${messageClass}">
+        <b>${m.name}</b> (${m.email})<br>
+        <p style="margin: 10px 0;">${m.message}</p>
+        <small>Received: ${new Date(m.createdAt).toLocaleString()}</small>
+        ${replySection}
+      </div>
+    `;
+  });
+}
+
+async function sendReply(messageId) {
+  const textarea = document.getElementById(`reply-${messageId}`);
+  const reply = textarea.value.trim();
+
+  if (!reply) {
+    alert("Please enter a reply");
+    return;
+  }
+
+  try {
+    const res = await fetch(
+      `http://localhost:5000/api/admin/messages/${messageId}/reply`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reply })
+      }
+    );
+
+    const text = await res.text(); // ✅ read first
+
+    let data;
+    try {
+      data = JSON.parse(text); // ✅ safe parse
+    } catch {
+      throw new Error("Server returned HTML instead of JSON");
+    }
+
+    if (!res.ok) {
+      throw new Error(data.message || "Reply failed");
+    }
+
+    alert("✅ Reply sent successfully");
+    loadMessages();
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ " + err.message);
+  }
+}
+
+
+
+/* ORDERS */
+
+async function loadOrders() {
+  const res = await fetch("http://localhost:5000/api/admin/orders");
+  const orders = await res.json();
+
+  const div = document.getElementById("orders");
+  div.innerHTML = "";
+
+  if (orders.length === 0) {
+    div.innerHTML = "<p>No orders yet.</p>";
+    return;
+  }
+
+  orders.forEach((o, index) => {
+
+    let itemsHTML = "";
+    o.items.forEach(item => {
+      itemsHTML += `
+        <li>
+          ${item.name} — ₹${item.price} × ${item.quantity}
+        </li>
+      `;
+    });
+
+    div.innerHTML += `
+      <div class="order-card">
+        <b>Order #${index + 1}</b><br><br>
+
+        <b>Customer:</b> ${o.customerName}<br>
+        <b>Email:</b> ${o.customerEmail}<br><br>
+
+        <b>Items:</b>
+        <ul>${itemsHTML}</ul>
+
+        <b>Total:</b> ₹${o.totalAmount}<br>
+        <b>Payment:</b> ${o.paymentMethod}<br>
+        <b>Status:</b> ${o.paymentStatus}<br>
+
+        <small>${new Date(o.createdAt).toLocaleString()}</small>
+      </div>
+    `;
+  });
+}
+loadProducts();
+loadMessages();
+loadOrders();
+</script>
+</body>
+</html>

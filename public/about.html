@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShopEase | About Us</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #fff0f6;
+}
+
+nav {
+  padding: 18px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ff4da6;
+}
+
+nav a {
+  text-decoration: none;
+  margin-left: 30px;
+  color: #444;
+  font-weight: 500;
+}
+
+nav a:hover {
+  color: #ff4da6;
+}
+
+.about {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.about img {
+  width: 420px;
+}
+
+.about-text h1 {
+  font-size: 42px;
+  color: #ff4da6;
+}
+
+.about-text p {
+  margin: 15px 0;
+  color: #555;
+  line-height: 1.7;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+  color: #ff4da6;
+}
+
+@media (max-width: 900px) {
+  .about {
+    flex-direction: column;
+    text-align: center;
+  }
+  .about img {
+    width: 300px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">She Style</div>
+  <div>
+    <a href="home.html">Home</a>
+    <a href="product.html">Products</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart</a>
+  </div>
+</nav>
+
+<section class="about">
+  <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+
+  <div class="about-text">
+    <h1>About She Style</h1>
+    <p>
+      She Style is a modern e-commerce platform designed to provide womens
+      with a smooth, secure, and enjoyable online shopping experience.
+      Our goal is to make quality products easily accessible at
+      affordable prices.
+    </p>
+
+    <p>
+      Our goal is to help women express their personal style effortlessly whether <br>its casual wear, festive outfits, or modern accessories through high-quality products at affordable prices. <br>She Style is designed for women who love fashion and value both style and comfort.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>🚀 Our Mission</h3>
+        <p>To empower women by offering stylish, trendy, and comfortable fashion products that enhance confidence and individuality.</p>
+      </div>
+      <div class="card">
+        <h3>👗Women-Focused Fashion</h3>
+        <p>Exclusive collections of dresses, clothes, footwear, sandals, goggles, and jewelry, designed especially for women of all styles and occasions.</p>
+      </div>
+      <div class="card">
+        <h3>✨ Elegant & Smart Design</h3>
+        <p>A simple, attractive, and user-friendly design that makes discovering and choosing fashion items easy and enjoyable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

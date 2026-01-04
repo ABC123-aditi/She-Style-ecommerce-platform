@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>She Style | Online Shopping</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #fff;
+}
+
+/* ================= NAVBAR ================= */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  background: #fff;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ff4da6;
+}
+
+.nav-links a {
+  margin-left: 30px;
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #ff4da6;
+}
+
+
+/* ================= HERO SECTION ================= */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+  background: linear-gradient(120deg, #ffe6f0, #ffd6e8);
+  min-height: 80vh;
+}
+
+.hero-text {
+  max-width: 500px;
+}
+
+.hero-text h1 {
+  font-size: 60px;
+  line-height: 1.2;
+}
+
+.hero-text h1 span {
+  color: #ff4da6;
+}
+
+.hero-text p {
+  margin: 20px 0;
+  color: #555;
+  font-size: 18px;
+}
+
+.hero-text button {
+  padding: 14px 35px;
+  font-size: 18px;
+  background: #ff4da6;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hero-text button:hover {
+  background: #e60073;
+}
+
+/* ================= HERO IMAGE ================= */
+.hero-img img {
+  width: 380px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-img img {
+    margin-top: 40px;
+    width: 300px;
+  }
+
+  nav {
+    padding: 15px 30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">She Style</div>
+  <div class="nav-links">
+    <a href="home.html">Home</a>
+    <a href="product.html">Product</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart</a>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-text">
+    <h1><span>Online</span><br>Shopping<br>10% Off</h1>
+    <p>
+      Go Girls!!<br>
+      Get the best deals on your favorite items.<br>
+    Limited Stock only!
+    </p>
+    <button onclick="window.location.href='product.html'">
+      Shop Now
+    </button>
+  </div>
+
+  <div class="hero-img">
+    <img src="https://cdn-icons-png.flaticon.com/512/2331/2331970.png" alt="Shopping">
+  </div>
+</section>
+<script>
+const token = localStorage.getItem('token');
+const user = JSON.parse(localStorage.getItem('user'));
+
+if (!token) {
+  window.location.href = 'login.html';
+} else {
+  console.log('Welcome', user.name);
+}
+</script>
+
+
+</body>
+</html>
