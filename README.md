@@ -1,8 +1,9 @@
 # She-Style-ecommerce-platform
-A full-stack women’s fashion e-commerce platform built to demonstrate real-world shopping flow including authentication, cart functionality, and product management.
+A full-stack women’s fashion e-commerce platform built to demonstrate real-world shopping flow including authentication, cart functionality, and product management, Admin Dashboard.
 
-## 🚀 Features
+🚀 Features
 - User Registration & Login (MongoDB)
+- Admin Dashboard
 - Product Listing
 - Add to Cart 
 - Responsive UI
@@ -23,5 +24,4 @@ A full-stack women’s fashion e-commerce platform built to demonstrate real-wor
 - Express.js
 - MongoDB
 - Mongoose
-
-
+ 
